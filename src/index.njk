@@ -8,46 +8,64 @@ description: Vow is a systems programming language with built-in contracts verif
   <div class="container">
     <img src="/img/v-icon.png" alt="Vow" class="v-icon">
     <h1 class="wordmark"><span class="wm-vow">vow</span><span class="wm-lang">-lang</span></h1>
-    <p class="wm-sub">AGENTIC CODING</p>
-    <p class="subtitle">Built-in contracts. Compile-time verification. Structured diagnostics.<br>
-    Designed for AI agents to write provably correct code.</p>
+    <p class="tagline">Built-in contracts. Compile-time verification. Structured diagnostics. Designed for AI agents to write provably correct code.</p>
   </div>
 </header>
 
 <main>
-  <section class="features">
+  <section class="properties">
     <div class="container">
-      <div class="feature-grid">
-        <div class="feature">
-          <h3>Contracts as First-Class</h3>
-          <p>Every function can carry <code>requires</code> and <code>ensures</code> clauses. Every loop can carry <code>invariant</code>. These are fed to a bounded model checker &mdash; not comments, not assertions.</p>
+      <p class="section-annotation">// properties</p>
+      <div class="property-list">
+        <div class="property">
+          <span class="property-index">01</span>
+          <div>
+            <h3>Contracts as First-Class</h3>
+            <p>Every function carries <code>requires</code> and <code>ensures</code> clauses. Every loop carries <code>invariant</code>. These are fed to a bounded model checker &mdash; not comments, not assertions.</p>
+          </div>
         </div>
-        <div class="feature">
-          <h3>Compile-Time Verification</h3>
-          <p>ESBMC bounded model checking proves your contracts hold or returns structured counterexamples. No runtime overhead in release builds.</p>
+        <div class="property">
+          <span class="property-index">02</span>
+          <div>
+            <h3>Compile-Time Verification</h3>
+            <p>ESBMC bounded model checking proves your contracts hold or returns structured counterexamples. No runtime overhead in release builds.</p>
+          </div>
         </div>
-        <div class="feature">
-          <h3>Blame Semantics</h3>
-          <p><code>requires</code> violations blame the caller. <code>ensures</code> violations blame the callee. Diagnostics tell you exactly who is at fault.</p>
+        <div class="property">
+          <span class="property-index">03</span>
+          <div>
+            <h3>Blame Semantics</h3>
+            <p><code>requires</code> violations blame the caller. <code>ensures</code> violations blame the callee. Diagnostics tell you exactly who is at fault.</p>
+          </div>
         </div>
-        <div class="feature">
-          <h3>Structured Output</h3>
-          <p>JSON diagnostics, counterexamples, and build results everywhere. No human-readable-only output to parse. Built for agent consumption.</p>
+        <div class="property">
+          <span class="property-index">04</span>
+          <div>
+            <h3>Structured Output</h3>
+            <p>JSON diagnostics, counterexamples, and build results everywhere. No human-readable-only output to parse. Built for agent consumption.</p>
+          </div>
         </div>
-        <div class="feature">
-          <h3>Linear Types</h3>
-          <p><code>linear struct</code> values must be consumed exactly once, enforced by the type checker. Resource leaks are compile errors.</p>
+        <div class="property">
+          <span class="property-index">05</span>
+          <div>
+            <h3>Linear Types</h3>
+            <p><code>linear struct</code> values must be consumed exactly once, enforced by the type checker. Resource leaks are compile errors.</p>
+          </div>
         </div>
-        <div class="feature">
-          <h3>Explicit Effects</h3>
-          <p>Pure functions have empty effect sets. Calling an effectful function from a pure context is a type error. No hidden side effects.</p>
+        <div class="property">
+          <span class="property-index">06</span>
+          <div>
+            <h3>Explicit Effects</h3>
+            <p>Pure functions have empty effect sets. Calling an effectful function from a pure context is a type error. No hidden side effects.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="example">
+  <section class="proof">
     <div class="container">
+      <p class="section-annotation">// proof</p>
       <h2>Write contracts. Get proofs.</h2>
       <pre><code><span class="kw">fn</span> <span class="fn">binary_search</span>(arr: Vec&lt;i64&gt;, target: i64) -&gt; i64
   <span class="ct">requires</span>: len(arr) &gt; 0
@@ -70,12 +88,13 @@ description: Vow is a systems programming language with built-in contracts verif
   }
   <span class="kw">return</span> -1;
 }</code></pre>
-      <p class="example-caption">The compiler proves the postcondition: if a result is returned, it's either <code>-1</code> or the element at that index equals the target.</p>
+      <p class="proof-caption">The compiler proves the postcondition: if a result is returned, it's either <code>-1</code> or the element at that index equals the target.</p>
     </div>
   </section>
 
-  <section class="cta">
+  <section class="begin">
     <div class="container">
+      <p class="section-annotation">// begin</p>
       <h2>Get started</h2>
       <p>Vow is open source. The compiler is self-hosted and verified to produce byte-identical binaries.</p>
       <a href="https://github.com/vow-lang/vow" class="btn">View on GitHub</a>
