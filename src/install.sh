@@ -98,5 +98,5 @@ esac
 
 dim ""
 dim "Next:"
-dim "  vowc skill install --global   # install the Claude Code skill"
+dim "  npx skills install vow-lang/vow   # install the Claude Code skill"
 dim "  vowc --help"

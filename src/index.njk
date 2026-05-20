@@ -33,7 +33,7 @@ description: Vow is a systems programming language with built-in contracts verif
       </div>
       <div class="install-box">
         <pre id="install-snippet"><code>$ curl -fsSL https://vow-lang.com/install.sh | bash
-$ vowc skill install --global</code></pre>
+$ npx skills install vow-lang/vow</code></pre>
         <button class="copy-btn" data-copy="install-snippet" aria-label="Copy">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         </button>
@@ -261,7 +261,7 @@ $ vowc skill install --global</code></pre>
       <div class="ref-item">
         <h3><span class="ref-index">§10</span> CEGIS workflow</h3>
         <p>Write &rarr; build &rarr; parse JSON &rarr; on <code>VerifyFailed</code>, read the counterexample &rarr; fix &rarr; repeat. The compiler emits structured output for every status; no log-scraping required.</p>
-        <pre><code>$ ulimit -v 2000000; vowc build hello.vow
+        <pre><code>$ vowc build hello.vow
 {
   <span class="str">"status"</span>: <span class="str">"Verified"</span>,
   <span class="str">"executable"</span>: <span class="str">"./hello"</span>,
