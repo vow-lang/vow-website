@@ -113,29 +113,24 @@ $ npx skills install vow-lang/vow</code></pre>
       <h2>Write contracts. Get proofs.</h2>
       <pre><code><span class="kw">module</span> <span class="fn">BinarySearch</span>
 
-<span class="kw">fn</span> <span class="fn">binary_search</span>(arr: Vec&lt;i64&gt;, target: i64) -&gt; i64 <span class="ct">vow</span> {
-  <span class="ct">requires</span>: arr.len() &gt; 0,
-  <span class="ct">ensures</span>: result == -1 || arr[result] == target
+<span class="kw">fn</span> <span class="fn">bisect</span>(lo: i64, hi: i64) -&gt; i64 <span class="ct">vow</span> {
+  <span class="ct">requires</span>: lo &gt;= 0,
+  <span class="ct">requires</span>: hi &gt;= lo,
+  <span class="ct">requires</span>: hi &lt;= 100
 } {
-  <span class="kw">let</span> <span class="kw">mut</span> lo: i64 = 0;
-  <span class="kw">let</span> <span class="kw">mut</span> hi: i64 = arr.len() - 1;
-
-  <span class="kw">while</span> lo &lt;= hi <span class="ct">vow</span> {
+  <span class="kw">let</span> <span class="kw">mut</span> lo: i64 = lo;
+  <span class="kw">let</span> <span class="kw">mut</span> hi: i64 = hi;
+  <span class="kw">while</span> lo + 1 &lt; hi <span class="ct">vow</span> {
     <span class="ct">invariant</span>: lo &gt;= 0,
-    <span class="ct">invariant</span>: hi &lt; arr.len()
+    <span class="ct">invariant</span>: hi &gt;= lo,
+    <span class="ct">invariant</span>: hi &lt;= 100
   } {
     <span class="kw">let</span> mid: i64 = lo + (hi - lo) / 2;
-    <span class="kw">if</span> arr[mid] == target {
-      <span class="kw">return</span> mid;
-    } <span class="kw">else if</span> arr[mid] &lt; target {
-      lo = mid + 1;
-    } <span class="kw">else</span> {
-      hi = mid - 1;
-    }
+    lo = mid;
   }
-  -1
+  lo
 }</code></pre>
-      <p class="proof-caption">The compiler proves the postcondition: if a result is returned, it's either <code>-1</code> or the element at that index equals the target.</p>
+      <p class="proof-caption">ESBMC proves the loop preserves every <code>invariant</code> on the back-edge across any inputs that satisfy the preconditions. <code>vowc verify</code> returns <code>{"status":"Verified"}</code>.</p>
     </div>
   </section>
 

@@ -34,6 +34,7 @@ html[data-theme="dark"] {
   --bg-surface: oklch(0.18 0.008 55);
   --border: oklch(0.23 0.006 55);
   --border-strong: oklch(0.30 0.006 55);
+  --code-cover: var(--bg-deep);
 
   --text: oklch(0.91 0.008 55);
   --text-secondary: oklch(0.68 0.006 55);
@@ -54,6 +55,7 @@ html[data-theme="light"] {
   --bg-surface: oklch(0.96 0.005 75);
   --border: oklch(0.88 0.005 75);
   --border-strong: oklch(0.78 0.005 75);
+  --code-cover: var(--bg-surface);
 
   --text: oklch(0.22 0.008 55);
   --text-secondary: oklch(0.42 0.006 55);
@@ -510,16 +512,85 @@ html[data-theme="light"] .v-icon {
 
 .proof pre,
 .reference pre {
+  position: relative;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 2px;
   padding: var(--sp-6);
-  overflow-x: auto;
+  overflow: hidden;
   font-family: var(--font-mono);
   font-size: 0.85rem;
   line-height: 1.8;
   tab-size: 2;
   color: var(--text);
+}
+
+.proof pre code,
+.reference pre code {
+  display: block;
+  overflow-x: auto;
+}
+
+/* Diagonal cover: hides the bottom-right triangle until hover. */
+.proof pre::after,
+.reference pre::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--code-cover);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.proof pre::before,
+.reference pre::before {
+  content: "this is not for you.";
+  position: absolute;
+  right: var(--sp-6);
+  bottom: var(--sp-4);
+  z-index: 2;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.proof pre:hover::after,
+.proof pre:hover::before,
+.proof pre:focus-within::after,
+.proof pre:focus-within::before,
+.reference pre:hover::after,
+.reference pre:hover::before,
+.reference pre:focus-within::after,
+.reference pre:focus-within::before {
+  opacity: 0;
+}
+
+@media (hover: none) {
+  .proof pre::after,
+  .proof pre::before,
+  .reference pre::after,
+  .reference pre::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof pre::after,
+  .proof pre::before,
+  .reference pre::after,
+  .reference pre::before {
+    transition: none;
+  }
 }
 
 .proof code,
