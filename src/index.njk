@@ -4,15 +4,59 @@ title: Vow — A Programming Language for Agentic Coding
 description: Vow is a systems programming language with built-in contracts verified at compile time. Designed for AI agents, not humans.
 ---
 
+<nav class="topbar">
+  <div class="container">
+    <a class="topbrand" href="/">
+      <img src="/img/v-icon.png" alt="" class="topbrand-icon">
+      <span><span class="wm-vow">vow</span><span class="wm-lang">-lang</span></span>
+    </a>
+    <div class="topbar-actions">
+      <a class="topbar-link" href="#reference">reference</a>
+      <a class="topbar-link" href="https://github.com/vow-lang/vow">github</a>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        <svg class="icon-sun"  width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
 <header>
   <div class="container">
     <img src="/img/v-icon.png" alt="Vow" class="v-icon">
     <h1 class="wordmark"><span class="wm-vow">vow</span><span class="wm-lang">-lang</span></h1>
     <p class="tagline">Built-in contracts. Compile-time verification. Structured diagnostics. Designed for AI agents to write provably correct code.</p>
+
+    <div class="install">
+      <div class="install-tabs">
+        <span class="install-tab is-active">For agents</span>
+      </div>
+      <div class="install-box">
+        <pre id="install-snippet"><code>$ curl -fsSL https://vow-lang.com/install.sh | bash
+$ vowc skill install --global</code></pre>
+        <button class="copy-btn" data-copy="install-snippet" aria-label="Copy">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+      <p class="install-hint">First line installs the toolchain (<code>vowc</code>, runtime, ESBMC shim). Second installs the Claude Code skill so your agent knows how to use it.</p>
+    </div>
   </div>
 </header>
 
 <main>
+  <section class="manifesto">
+    <div class="container">
+      <p class="section-annotation">// manifesto</p>
+      <blockquote class="manifesto-quote">
+        <span class="line">The syntax is not for you.</span>
+        <span class="line">The semantics is not for you.</span>
+        <span class="line">The language is not for you.</span>
+        <span class="line line-strong">Yours is only the product.</span>
+      </blockquote>
+      <p class="manifesto-caption">Vow is designed for the agent that writes the code. Humans review the artifact, not the keystroke.</p>
+    </div>
+  </section>
+
   <section class="properties">
     <div class="container">
       <p class="section-annotation">// properties</p>
@@ -92,6 +136,141 @@ description: Vow is a systems programming language with built-in contracts verif
   -1
 }</code></pre>
       <p class="proof-caption">The compiler proves the postcondition: if a result is returned, it's either <code>-1</code> or the element at that index equals the target.</p>
+    </div>
+  </section>
+
+  <section id="reference" class="reference">
+    <div class="container">
+      <p class="section-annotation">// reference</p>
+      <h2>Language reference</h2>
+      <p class="reference-intro">A curated tour of Vow's surface. The complete spec lives in the <a href="https://github.com/vow-lang/vow/tree/main/docs/spec">main repo</a>.</p>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§1</span> Module declaration</h3>
+        <p>Every file begins with a module declaration in PascalCase. Imports use dot-separated paths.</p>
+        <pre><code><span class="kw">module</span> <span class="fn">BinarySearch</span>
+
+<span class="kw">use</span> std.io</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§2</span> Functions and effects</h3>
+        <p>Pure functions need no annotation. Effects appear in brackets after the return type: <code>[io]</code>, <code>[read, write]</code>, <code>[panic]</code>. Calling an effectful function from a pure context is a type error.</p>
+        <pre><code><span class="kw">fn</span> <span class="fn">add</span>(x: i64, y: i64) -&gt; i64 {
+    x + y
+}
+
+<span class="kw">fn</span> <span class="fn">main</span>() -&gt; i32 <span class="ct">[io]</span> {
+    print_str(<span class="str">"hello"</span>);
+    0
+}</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§3</span> Contracts: requires, ensures, invariant</h3>
+        <p>The <code>vow</code> block carries the contract. <code>requires</code> is a precondition (blame: caller). <code>ensures</code> is a postcondition over <code>result</code> (blame: callee). Multiple clauses are comma-separated.</p>
+        <pre><code><span class="kw">fn</span> <span class="fn">clamp</span>(x: i64, lo: i64, hi: i64) -&gt; i64 <span class="ct">vow</span> {
+    <span class="ct">requires</span>: lo &lt;= hi,
+    <span class="ct">ensures</span>: result &gt;= lo,
+    <span class="ct">ensures</span>: result &lt;= hi
+} {
+    <span class="kw">if</span> x &lt; lo { lo } <span class="kw">else</span> { <span class="kw">if</span> x &gt; hi { hi } <span class="kw">else</span> { x } }
+}</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§4</span> Refinement types on parameters</h3>
+        <p><code>where</code> clauses on parameters become additional preconditions. Each clause may only reference its own parameter.</p>
+        <pre><code><span class="kw">fn</span> <span class="fn">safe_sub</span>(a: i64 <span class="kw">where</span> a &gt;= 0, b: i64 <span class="kw">where</span> b &gt;= 0) -&gt; i64 <span class="ct">vow</span> {
+    <span class="ct">requires</span>: a &gt;= b,
+    <span class="ct">ensures</span>: result &gt;= 0
+} {
+    a - b
+}</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§5</span> Types</h3>
+        <p>Primitives: <code>i32</code>, <code>i64</code>, <code>u8</code>, <code>u64</code>, <code>f32</code>, <code>f64</code>, <code>bool</code>, <code>()</code>, <code>!</code>. Built-in parameterised types cover the common containers; user-defined types are structs and enums.</p>
+        <pre><code><span class="kw">let</span> n: i64 = 42;
+<span class="kw">let</span> v: Vec&lt;i64&gt; = Vec::new();
+<span class="kw">let</span> name: String = <span class="str">"vow"</span>;
+<span class="kw">let</span> maybe: Option&lt;i64&gt; = Option::Some(7);
+<span class="kw">let</span> map: BTreeMap&lt;i64, i64&gt; = BTreeMap::new();</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§6</span> Control flow</h3>
+        <p><code>if</code>/<code>else</code> is an expression. Loops can carry invariants the verifier checks at every back-edge.</p>
+        <pre><code><span class="kw">let</span> <span class="kw">mut</span> i: i64 = 0;
+<span class="kw">while</span> i &lt; n <span class="ct">vow</span> {
+    <span class="ct">invariant</span>: i &gt;= 0,
+    <span class="ct">invariant</span>: i &lt;= n
+} {
+    v.push(i);
+    i = i + 1;
+}
+
+<span class="kw">for</span> x <span class="kw">in</span> v <span class="ct">vow</span> {
+    <span class="ct">invariant</span>: total &gt;= 0
+} {
+    total = total + x;
+}</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§7</span> Structs and linear structs</h3>
+        <p>Regular structs are heap-allocated and pass by reference. <code>linear struct</code> values must be consumed exactly once &mdash; resource leaks become compile errors.</p>
+        <pre><code><span class="kw">struct</span> <span class="fn">Point</span> {
+    x: i64,
+    y: i64,
+}
+
+<span class="kw">linear struct</span> <span class="fn">FileHandle</span> {
+    fd: i64,
+}
+
+<span class="kw">let</span> p: Point = Point { x: 1, y: 2 };</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§8</span> Enums and pattern matching</h3>
+        <p>Enum variants can be unit, tuple, or struct. <code>match</code> is an expression; arms must be exhaustive and share a type.</p>
+        <pre><code><span class="kw">enum</span> <span class="fn">Shape</span> {
+    Circle(i64),
+    Rect(i64, i64),
+    Empty,
+}
+
+<span class="kw">let</span> area: i64 = <span class="kw">match</span> s {
+    Shape::Circle(r)    =&gt; 3 * r * r,
+    Shape::Rect(w, h)   =&gt; w * h,
+    Shape::Empty        =&gt; 0,
+};</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§9</span> Error propagation</h3>
+        <p>The <code>?</code> operator on <code>Option</code> or <code>Result</code> short-circuits to the caller. The calling function's return type must match.</p>
+        <pre><code><span class="kw">fn</span> <span class="fn">first_line_len</span>(s: String) -&gt; Option&lt;i64&gt; {
+    <span class="kw">let</span> nl: i64 = s.find_byte(<span class="str">"\n"</span>.byte_at(0))?;
+    Option::Some(nl)
+}</code></pre>
+      </div>
+
+      <div class="ref-item">
+        <h3><span class="ref-index">§10</span> CEGIS workflow</h3>
+        <p>Write &rarr; build &rarr; parse JSON &rarr; on <code>VerifyFailed</code>, read the counterexample &rarr; fix &rarr; repeat. The compiler emits structured output for every status; no log-scraping required.</p>
+        <pre><code>$ ulimit -v 2000000; vowc build hello.vow
+{
+  <span class="str">"status"</span>: <span class="str">"Verified"</span>,
+  <span class="str">"executable"</span>: <span class="str">"./hello"</span>,
+  <span class="str">"diagnostics"</span>: [],
+  <span class="str">"counterexamples"</span>: []
+}</code></pre>
+      </div>
+
+      <p class="reference-foot">No generics. No traits. No closures. No macros. No garbage collection. The verification surface stays small on purpose.</p>
     </div>
   </section>
 
