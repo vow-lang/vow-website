@@ -29,20 +29,22 @@
 
 /* Dark theme (default) */
 html[data-theme="dark"] {
-  --bg-deep: oklch(0.11 0.006 55);
-  --bg: oklch(0.14 0.006 55);
-  --bg-surface: oklch(0.18 0.008 55);
-  --border: oklch(0.23 0.006 55);
-  --border-strong: oklch(0.30 0.006 55);
-  --code-cover: var(--bg-deep);
+  /* Anthracite, not black */
+  --bg-deep: oklch(0.16 0.006 55);
+  --bg: oklch(0.19 0.006 55);
+  --bg-surface: oklch(0.23 0.008 55);
+  --border: oklch(0.28 0.006 55);
+  --border-strong: oklch(0.34 0.006 55);
+  /* Cover is a distinctly lighter (mid-dark) gray that reads as gray, not black */
+  --code-cover: oklch(0.32 0.008 55);
 
-  --text: oklch(0.91 0.008 55);
-  --text-secondary: oklch(0.68 0.006 55);
-  --text-muted: oklch(0.48 0.006 55);
+  --text: oklch(0.92 0.008 55);
+  --text-secondary: oklch(0.72 0.006 55);
+  --text-muted: oklch(0.58 0.006 55);
 
-  --syn-keyword: oklch(0.68 0.06 55);
-  --syn-function: oklch(0.86 0.02 55);
-  --syn-string: oklch(0.72 0.10 110);
+  --syn-keyword: oklch(0.72 0.06 55);
+  --syn-function: oklch(0.88 0.02 55);
+  --syn-string: oklch(0.74 0.10 110);
   --syn-contract: var(--brand);
 
   --logo-lang-color: var(--text);
@@ -55,11 +57,12 @@ html[data-theme="light"] {
   --bg-surface: oklch(0.96 0.005 75);
   --border: oklch(0.88 0.005 75);
   --border-strong: oklch(0.78 0.005 75);
-  --code-cover: var(--bg-surface);
+  /* Cover is a distinctly darker light gray that reads as gray, not near-white */
+  --code-cover: oklch(0.86 0.005 75);
 
   --text: oklch(0.22 0.008 55);
   --text-secondary: oklch(0.42 0.006 55);
-  --text-muted: oklch(0.58 0.006 55);
+  --text-muted: oklch(0.55 0.006 55);
 
   --syn-keyword: oklch(0.45 0.06 280);
   --syn-function: oklch(0.30 0.02 55);
