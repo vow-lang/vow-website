@@ -4,26 +4,10 @@
    -------------------------------------------------------- */
 
 :root {
-  /* Brand */
+  /* Brand (shared across themes) */
   --brand: oklch(0.58 0.19 32);
   --brand-hover: oklch(0.65 0.20 32);
   --brand-dim: oklch(0.42 0.12 32);
-
-  /* Surfaces — warm-tinted toward brand hue */
-  --bg-deep: oklch(0.11 0.006 55);
-  --bg: oklch(0.14 0.006 55);
-  --bg-surface: oklch(0.18 0.008 55);
-  --border: oklch(0.23 0.006 55);
-
-  /* Text */
-  --text: oklch(0.91 0.008 55);
-  --text-secondary: oklch(0.68 0.006 55);
-  --text-muted: oklch(0.48 0.006 55);
-
-  /* Code syntax */
-  --syn-keyword: oklch(0.68 0.06 55);
-  --syn-function: oklch(0.86 0.02 55);
-  --syn-contract: var(--brand);
 
   /* Typography */
   --font-display: "Sora", sans-serif;
@@ -31,16 +15,56 @@
   --font-mono: "Azeret Mono", monospace;
 
   /* Spacing scale (4pt) */
-  --sp-1: 0.25rem;   /* 4 */
-  --sp-2: 0.5rem;    /* 8 */
-  --sp-3: 0.75rem;   /* 12 */
-  --sp-4: 1rem;      /* 16 */
-  --sp-6: 1.5rem;    /* 24 */
-  --sp-8: 2rem;      /* 32 */
-  --sp-12: 3rem;     /* 48 */
-  --sp-16: 4rem;     /* 64 */
-  --sp-24: 6rem;     /* 96 */
-  --sp-32: 8rem;     /* 128 */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-24: 6rem;
+  --sp-32: 8rem;
+}
+
+/* Dark theme (default) */
+html[data-theme="dark"] {
+  --bg-deep: oklch(0.11 0.006 55);
+  --bg: oklch(0.14 0.006 55);
+  --bg-surface: oklch(0.18 0.008 55);
+  --border: oklch(0.23 0.006 55);
+  --border-strong: oklch(0.30 0.006 55);
+
+  --text: oklch(0.91 0.008 55);
+  --text-secondary: oklch(0.68 0.006 55);
+  --text-muted: oklch(0.48 0.006 55);
+
+  --syn-keyword: oklch(0.68 0.06 55);
+  --syn-function: oklch(0.86 0.02 55);
+  --syn-string: oklch(0.72 0.10 110);
+  --syn-contract: var(--brand);
+
+  --logo-lang-color: var(--text);
+}
+
+/* Light theme */
+html[data-theme="light"] {
+  --bg-deep: oklch(0.985 0.003 75);
+  --bg: oklch(0.995 0.002 75);
+  --bg-surface: oklch(0.96 0.005 75);
+  --border: oklch(0.88 0.005 75);
+  --border-strong: oklch(0.78 0.005 75);
+
+  --text: oklch(0.22 0.008 55);
+  --text-secondary: oklch(0.42 0.006 55);
+  --text-muted: oklch(0.58 0.006 55);
+
+  --syn-keyword: oklch(0.45 0.06 280);
+  --syn-function: oklch(0.30 0.02 55);
+  --syn-string: oklch(0.55 0.12 145);
+  --syn-contract: var(--brand);
+
+  --logo-lang-color: var(--text);
 }
 
 
@@ -67,6 +91,7 @@ body {
   font-family: var(--font-body);
   font-weight: 400;
   line-height: 1.7;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .container {
@@ -75,20 +100,25 @@ body {
   padding: 0 var(--sp-6);
 }
 
+a {
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+a:hover {
+  border-bottom-color: var(--brand);
+}
+
 
 /* --------------------------------------------------------
    Page-load animation
    -------------------------------------------------------- */
 
 @keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -100,11 +130,96 @@ body {
 
 
 /* --------------------------------------------------------
+   Top bar
+   -------------------------------------------------------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in oklch, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(160%) blur(8px);
+  -webkit-backdrop-filter: saturate(160%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-3);
+}
+
+.topbrand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  border-bottom: none;
+}
+
+.topbrand:hover { border-bottom: none; }
+
+.topbrand-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.topbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-6);
+}
+
+.topbar-link {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  border-bottom: none;
+}
+
+.topbar-link:hover {
+  color: var(--text);
+  border-bottom: none;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+html[data-theme="dark"]  .theme-toggle .icon-sun  { display: inline; }
+html[data-theme="dark"]  .theme-toggle .icon-moon { display: none; }
+html[data-theme="light"] .theme-toggle .icon-sun  { display: none; }
+html[data-theme="light"] .theme-toggle .icon-moon { display: inline; }
+
+
+/* --------------------------------------------------------
    Header
    -------------------------------------------------------- */
 
 header {
-  padding: var(--sp-32) 0 var(--sp-24);
+  padding: var(--sp-24) 0 var(--sp-16);
   text-align: center;
 }
 
@@ -113,6 +228,11 @@ header {
   height: auto;
   opacity: 0;
   animation: reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+html[data-theme="light"] .v-icon {
+  /* The icon is white-on-transparent; invert for light backgrounds. */
+  filter: invert(1) hue-rotate(180deg);
 }
 
 .wordmark {
@@ -126,14 +246,8 @@ header {
   animation: reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 }
 
-.wm-vow {
-  color: var(--brand);
-}
-
-.wm-lang {
-  color: var(--text);
-  font-weight: 300;
-}
+.wm-vow  { color: var(--brand); }
+.wm-lang { color: var(--logo-lang-color); font-weight: 300; }
 
 .tagline {
   font-family: var(--font-body);
@@ -151,6 +265,105 @@ header {
 
 
 /* --------------------------------------------------------
+   Install box
+   -------------------------------------------------------- */
+
+.install {
+  margin: var(--sp-12) auto 0;
+  max-width: 38rem;
+  text-align: left;
+  opacity: 0;
+  animation: reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.install-tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-3);
+}
+
+.install-tab {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding-bottom: var(--sp-1);
+  letter-spacing: 0.01em;
+}
+
+.install-tab.is-active {
+  color: var(--text);
+  border-bottom: 1px solid var(--brand);
+}
+
+.install-box {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: var(--sp-4) calc(var(--sp-8) + 1rem) var(--sp-4) var(--sp-4);
+}
+
+.install-box pre {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.9;
+  color: var(--text);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.install-box code {
+  font-family: inherit;
+  color: inherit;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.copy-btn:hover {
+  color: var(--text);
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+.copy-btn.is-copied {
+  color: var(--brand);
+  border-color: var(--brand);
+}
+
+.install-hint {
+  margin-top: var(--sp-3);
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  text-align: center;
+}
+
+.install-hint code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+
+/* --------------------------------------------------------
    Section annotations — code-comment motif
    -------------------------------------------------------- */
 
@@ -161,6 +374,59 @@ header {
   color: var(--text-muted);
   letter-spacing: 0.04em;
   margin-bottom: var(--sp-12);
+}
+
+
+/* --------------------------------------------------------
+   Manifesto
+   -------------------------------------------------------- */
+
+.manifesto {
+  padding: var(--sp-24) 0 var(--sp-16);
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.manifesto-quote {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.manifesto-quote .line {
+  display: block;
+}
+
+.manifesto-quote .line-strong {
+  color: var(--text);
+  margin-top: var(--sp-3);
+  position: relative;
+  padding-left: var(--sp-4);
+}
+
+.manifesto-quote .line-strong::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.25em;
+  bottom: 0.25em;
+  width: 3px;
+  background: var(--brand);
+}
+
+.manifesto-caption {
+  margin-top: var(--sp-8);
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 50ch;
+  line-height: 1.7;
 }
 
 
@@ -220,43 +486,60 @@ header {
 
 
 /* --------------------------------------------------------
-   Proof (code example)
+   Proof + Reference code blocks
    -------------------------------------------------------- */
 
-.proof {
+.proof,
+.reference {
   padding: var(--sp-24) 0;
+}
+
+.proof {
   background: var(--bg-deep);
 }
 
-.proof h2 {
+.proof h2,
+.reference h2 {
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 3vw, 1.8rem);
   font-weight: 600;
   color: var(--text);
-  margin-bottom: var(--sp-8);
+  margin-bottom: var(--sp-3);
   letter-spacing: -0.02em;
 }
 
-.proof pre {
+.proof pre,
+.reference pre {
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 2px;
-  padding: var(--sp-8);
+  padding: var(--sp-6);
   overflow-x: auto;
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   line-height: 1.8;
   tab-size: 2;
-}
-
-.proof code {
-  font-family: inherit;
   color: var(--text);
 }
 
-.proof .kw { color: var(--syn-keyword); }
-.proof .fn { color: var(--syn-function); }
-.proof .ct { color: var(--syn-contract); }
+.proof code,
+.reference code {
+  font-family: inherit;
+}
+
+.proof pre code,
+.reference pre code {
+  color: var(--text);
+}
+
+.proof .kw,  .reference .kw  { color: var(--syn-keyword); }
+.proof .fn,  .reference .fn  { color: var(--syn-function); font-weight: 500; }
+.proof .ct,  .reference .ct  { color: var(--syn-contract); }
+.proof .str, .reference .str { color: var(--syn-string); }
+
+.proof h2 {
+  margin-bottom: var(--sp-8);
+}
 
 .proof-caption {
   color: var(--text-muted);
@@ -274,12 +557,75 @@ header {
 
 
 /* --------------------------------------------------------
+   Language reference
+   -------------------------------------------------------- */
+
+.reference-intro {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: var(--sp-12);
+  max-width: 56ch;
+}
+
+.ref-item {
+  padding: var(--sp-8) 0;
+  border-top: 1px solid var(--border);
+}
+
+.ref-item:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.ref-item h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--sp-3);
+  letter-spacing: -0.01em;
+}
+
+.ref-index {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--brand);
+  font-weight: 500;
+  margin-right: var(--sp-3);
+}
+
+.ref-item p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: var(--sp-4);
+  max-width: 65ch;
+}
+
+.ref-item p code,
+.reference-foot code {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--brand);
+}
+
+.reference-foot {
+  margin-top: var(--sp-12);
+  padding-top: var(--sp-8);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+
+/* --------------------------------------------------------
    Begin (CTA)
    -------------------------------------------------------- */
 
 .begin {
   padding: var(--sp-24) 0;
   text-align: center;
+  background: var(--bg-deep);
 }
 
 .begin h2 {
@@ -317,6 +663,7 @@ header {
 .btn:hover {
   background: var(--brand);
   color: var(--bg-deep);
+  border-bottom-color: var(--brand);
 }
 
 
@@ -333,12 +680,12 @@ footer {
 
 footer a {
   color: var(--text-secondary);
-  text-decoration: none;
-  transition: color 0.2s;
+  border-bottom: none;
 }
 
 footer a:hover {
   color: var(--text);
+  border-bottom: none;
 }
 
 
@@ -347,8 +694,17 @@ footer a:hover {
    -------------------------------------------------------- */
 
 @media (max-width: 640px) {
+  .topbar .container {
+    padding-top: var(--sp-2);
+    padding-bottom: var(--sp-2);
+  }
+
+  .topbar-actions {
+    gap: var(--sp-4);
+  }
+
   header {
-    padding: var(--sp-16) 0 var(--sp-12);
+    padding: var(--sp-12) 0 var(--sp-8);
   }
 
   .v-icon {
@@ -363,12 +719,32 @@ footer a:hover {
     margin-top: var(--sp-4);
   }
 
+  .install {
+    margin-top: var(--sp-8);
+  }
+
+  .install-box {
+    padding-right: calc(var(--sp-6) + 1rem);
+  }
+
+  .install-box pre {
+    font-size: 0.78rem;
+  }
+
   .section-annotation {
     margin-bottom: var(--sp-8);
   }
 
-  .properties {
+  .manifesto,
+  .properties,
+  .proof,
+  .reference,
+  .begin {
     padding: var(--sp-16) 0;
+  }
+
+  .manifesto-quote {
+    font-size: clamp(1.4rem, 6.5vw, 2rem);
   }
 
   .property-list {
@@ -376,17 +752,10 @@ footer a:hover {
     gap: var(--sp-8);
   }
 
-  .proof {
-    padding: var(--sp-16) 0;
-  }
-
-  .proof pre {
+  .proof pre,
+  .reference pre {
     padding: var(--sp-4);
     font-size: 0.78rem;
     line-height: 1.7;
-  }
-
-  .begin {
-    padding: var(--sp-16) 0;
   }
 }
