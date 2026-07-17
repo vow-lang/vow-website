@@ -693,6 +693,86 @@ html[data-theme="light"] .v-icon {
 
 
 /* --------------------------------------------------------
+   Release announcement
+   -------------------------------------------------------- */
+
+.release {
+  padding: var(--sp-24) 0;
+  border-top: 1px solid var(--border);
+}
+
+.release-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-4);
+}
+
+.release-head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.release-date {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.release-intro {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 65ch;
+  margin-bottom: var(--sp-12);
+}
+
+.release-intro em {
+  color: var(--text);
+  font-style: normal;
+  border-bottom: 1px solid var(--brand);
+}
+
+.release-item {
+  padding: var(--sp-8) 0;
+  border-top: 1px solid var(--border);
+}
+
+.release-item:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.release-item h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--sp-3);
+  letter-spacing: -0.01em;
+}
+
+.release-item p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 65ch;
+}
+
+.release-intro code,
+.release-item code {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--brand);
+}
+
+
+/* --------------------------------------------------------
    Begin (CTA)
    -------------------------------------------------------- */
 
@@ -813,6 +893,7 @@ footer a:hover {
   .properties,
   .proof,
   .reference,
+  .release,
   .begin {
     padding: var(--sp-16) 0;
   }
