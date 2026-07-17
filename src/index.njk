@@ -12,6 +12,7 @@ description: Vow is a systems programming language with built-in contracts verif
     </a>
     <div class="topbar-actions">
       <a class="topbar-link" href="#reference">reference</a>
+      <a class="topbar-link" href="#release">release</a>
       <a class="topbar-link" href="https://github.com/vow-lang/vow">github</a>
       <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
         <svg class="icon-sun"  width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -266,6 +267,42 @@ $ npx skills install vow-lang/vow</code></pre>
       </div>
 
       <p class="reference-foot">No generics. No traits. No closures. No macros. No garbage collection. The verification surface stays small on purpose.</p>
+    </div>
+  </section>
+
+  <section id="release" class="release">
+    <div class="container">
+      <p class="section-annotation">// release</p>
+      <div class="release-head">
+        <h2>Vow 0.3.0</h2>
+        <span class="release-date">July 16, 2026</span>
+      </div>
+      <p class="release-intro">Version 0.3.0 is a foundations release. Two threads run through it: making verification <em>honest</em>, and making the type system <em>sound</em>. The compiler now fails closed when it cannot prove a contract, rejects contracts that pass only by being trivially true, and closes a family of signed/unsigned holes that let unsound programs slip past the checker. <a href="https://github.com/vow-lang/vow/releases/tag/v0.3.0">Full changelog &rarr;</a></p>
+
+      <div class="release-item">
+        <h3>Verification that fails closed</h3>
+        <p>Contract verification no longer lets unproven work pass as proven. An unprovable contract, a verifier worker that panics, and effect or linear-type errors now each fail the build instead of slipping through silently. ESBMC's memory use is bounded so runs stay predictable, and user-defined structs are now modelled through a heap model &mdash; widening the set of programs the verifier can reason about.</p>
+      </div>
+
+      <div class="release-item">
+        <h3>No contracts that prove nothing</h3>
+        <p>A contract can lie by being vacuously true. A new static contract-quality classifier, backed by per-clause checking (ESBMC <code>--multi-property</code>), flags contracts that are vacuous or trivially satisfiable &mdash; the kind of <code>ensures</code> any implementation would pass. Every weak bit-packer contract was rewritten, bringing the CI weak-contract gate to zero.</p>
+      </div>
+
+      <div class="release-item">
+        <h3>A sounder type checker</h3>
+        <p>The checker now enforces <code>mut</code>: mutating an immutable binding is a compile error. A family of <code>u64</code>/<code>i64</code> soundness holes is closed &mdash; mixing signed and unsigned is rejected, and unsignedness is preserved through pattern matches, loop back-edges, and coercions. Linear types can no longer be smuggled in as map values.</p>
+      </div>
+
+      <div class="release-item">
+        <h3>New analysis tooling</h3>
+        <p>A new <code>complexity</code> subcommand reports per-function complexity, including the weight of contracts and parameter refinements. <code>--perfetto</code> emits a Chrome/Perfetto trace of the build-and-verify pipeline, so you can see where the time goes. <code>--replay-cex</code> differentially tests the verifier's model against the real runtime by replaying counterexamples.</p>
+      </div>
+
+      <div class="release-item">
+        <h3>Standard library and runtime</h3>
+        <p>The standard library is unified and now has its own documentation site. Arbitrary-precision integers arrive as a base-2<sup>32</sup> bignum with <code>u64</code> interop, bitwise operations, and truncated subtraction, plus a small-integer fast path. On the runtime side: checked arithmetic in <code>Vec</code> growth, reclaimed small-<code>Vec</code> leaks in loop arenas, and exit code 134 reserved for aborts.</p>
+      </div>
     </div>
   </section>
 
