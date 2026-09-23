@@ -22,6 +22,10 @@ npx @11ty/eleventy     # Direct 11ty invocation
 - **Deployment**: GitHub Actions (`.github/workflows/pages.yml`) deploys `_site/` to GitHub Pages on push to `main`
 - **Custom domain**: `www.vow-lang.com` via `src/CNAME`
 
+## Deployment Safety
+
+- **Stop and confirm before pushing to `main`.** A push to `main` triggers the GitHub Actions workflow above, which auto-deploys directly to the live production domain (`www.vow-lang.com`). Before running `git push` to `main` (including merging a PR into it), pause and get explicit confirmation from the user.
+
 ## File Structure
 
 ```
